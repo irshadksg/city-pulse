@@ -66,9 +66,14 @@ export const useSignupForm = () => {
     }
   };
 
+  const handleNavigateToLogin = () => {
+    router.push('/(auth)');
+  };
+
   return {
     formValues,
     formErrors,
+    handleNavigateToLogin,
     handleChange,
     handleSubmit,
   };

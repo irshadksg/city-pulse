@@ -8,7 +8,8 @@ import { useSignupForm } from './useSignupForm';
 export default function Signup() {
   const theme = useTheme();
   const styles = createStyles(theme);
-  const { formValues, formErrors, handleChange, handleSubmit } = useSignupForm();
+  const { formValues, formErrors, handleNavigateToLogin, handleChange, handleSubmit } =
+    useSignupForm();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -76,6 +77,10 @@ export default function Signup() {
           <Button mode="contained" onPress={handleSubmit} style={styles.button}>
             Create Account
           </Button>
+
+          <Text style={styles.haveAccountText} onPress={handleNavigateToLogin}>
+            Already have an account? <Text style={styles.loginText}>Login</Text>
+          </Text>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -103,5 +108,14 @@ const createStyles = (theme: MD3Theme) =>
     },
     button: {
       marginTop: 20,
+    },
+    loginText: {
+      color: theme.colors.primary,
+      fontSize: 14,
+      fontWeight: '600',
+    },
+    haveAccountText: {
+      textAlign: 'center',
+      marginTop: 12,
     },
   });
