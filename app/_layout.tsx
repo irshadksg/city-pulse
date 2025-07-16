@@ -10,6 +10,10 @@ export default function RootLayout() {
   return (
     <PaperProvider theme={theme}>
       <Stack>
+        {/* Authentication */}
+        <Stack.Screen name="(auth)/signup" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)/index" options={{ headerShown: false }} />
+
         {/* Tab navigation (Home, Profile) */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
