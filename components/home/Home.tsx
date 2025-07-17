@@ -15,7 +15,10 @@ const Home = () => {
     setIsSearchOpen,
     apiParams,
     setApiParams,
+    isFavorite,
+    handleToggleFavorite,
   } = useHome();
+
   const theme = useTheme();
   const styles = createStyles(theme);
 
@@ -77,7 +80,13 @@ const Home = () => {
           contentContainerStyle={styles.listContainer}
           data={data}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <EventCard event={item} />}
+          renderItem={({ item }) => (
+            <EventCard
+              event={item}
+              isFavorite={isFavorite(item.id)}
+              onToggleFavorite={handleToggleFavorite}
+            />
+          )}
         />
       )}
 
