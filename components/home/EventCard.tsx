@@ -8,9 +8,10 @@ interface Props {
   event: TicketmasterEvent;
   isFavorite: boolean;
   onToggleFavorite: (eventId: string) => void;
+  onPress?: () => void;
 }
 
-const EventCard: React.FC<Props> = ({ event, isFavorite, onToggleFavorite }) => {
+const EventCard: React.FC<Props> = ({ event, isFavorite, onToggleFavorite, onPress }) => {
   const { isRTL } = useRTL();
   const theme = useTheme();
   const styles = createStyles(theme, isRTL);
@@ -19,7 +20,7 @@ const EventCard: React.FC<Props> = ({ event, isFavorite, onToggleFavorite }) => 
   const date = new Date(event.dates.start.dateTime).toLocaleString();
 
   return (
-    <Card style={styles.card} elevation={3}>
+    <Card style={styles.card} elevation={3} onPress={onPress}>
       {imageUrl && (
         <View style={styles.imageWrapper}>
           <ImageBackground

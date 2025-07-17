@@ -17,6 +17,7 @@ const Home = () => {
     setApiParams,
     isFavorite,
     handleToggleFavorite,
+    handleNavigateDetailsPage,
   } = useHome();
 
   const theme = useTheme();
@@ -85,6 +86,7 @@ const Home = () => {
               event={item}
               isFavorite={isFavorite(item.id)}
               onToggleFavorite={handleToggleFavorite}
+              onPress={() => handleNavigateDetailsPage(item?.id)}
             />
           )}
         />

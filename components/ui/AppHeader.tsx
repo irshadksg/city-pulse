@@ -1,3 +1,4 @@
+import { useNavigation } from 'expo-router';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, MD3Theme, useTheme } from 'react-native-paper';
@@ -33,27 +34,32 @@ const AppHeader: React.FC<AppHeaderProps> = ({
 }) => {
   const theme = useTheme();
   const styles = createStyles(theme);
+  const navigation = useNavigation();
 
   return (
     <Appbar.Header dark style={styles.header}>
+      {navigation.canGoBack?.() && (
+        <Appbar.BackAction onPress={navigation.goBack} color={theme.colors.onPrimary} />
+      )}
+
       <Appbar.Content title={title} titleStyle={styles.title} />
 
       {editAction?.show && (
-        <Appbar.Action color={theme.colors.onPrimary} icon="pencil" onPress={editAction?.onPress} />
+        <Appbar.Action icon="pencil" color={theme.colors.onPrimary} onPress={editAction.onPress} />
       )}
 
       {logoutAction?.show && (
         <Appbar.Action
-          iconColor={theme.colors.onPrimary}
           icon="logout"
-          onPress={logoutAction?.onPress}
+          color={theme.colors.onPrimary}
+          onPress={logoutAction.onPress}
         />
       )}
 
       {searchAction?.show && (
         <Appbar.Action
           icon={searchAction.isSearchOpen ? 'close' : 'magnify'}
-          iconColor={theme.colors.onPrimary}
+          color={theme.colors.onPrimary}
           onPress={searchAction.onPress}
         />
       )}
@@ -65,7 +71,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
               ? 'format-textdirection-l-to-r'
               : 'format-textdirection-r-to-l'
           }
-          iconColor={theme.colors.onPrimary}
+          color={theme.colors.onPrimary}
           onPress={directionToggleAction.onPress}
         />
       )}
