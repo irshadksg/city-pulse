@@ -12,9 +12,14 @@ interface AppHeaderProps {
     show: boolean;
     onPress?: () => void;
   };
+  searchAction?: {
+    show: boolean;
+    isSearchOpen: boolean;
+    onPress: () => void;
+  };
 }
 
-const AppHeader: React.FC<AppHeaderProps> = ({ title, editAction, logoutAction }) => {
+const AppHeader: React.FC<AppHeaderProps> = ({ title, editAction, logoutAction, searchAction }) => {
   const theme = useTheme();
   const styles = createStyles(theme);
 
@@ -31,6 +36,14 @@ const AppHeader: React.FC<AppHeaderProps> = ({ title, editAction, logoutAction }
           iconColor={theme.colors.onPrimary}
           icon="logout"
           onPress={logoutAction?.onPress}
+        />
+      )}
+
+      {searchAction?.show && (
+        <Appbar.Action
+          icon={searchAction.isSearchOpen ? 'close' : 'magnify'}
+          iconColor={theme.colors.onPrimary}
+          onPress={searchAction.onPress}
         />
       )}
     </Appbar.Header>
