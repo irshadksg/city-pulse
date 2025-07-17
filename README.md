@@ -113,9 +113,18 @@ You'll be able to open the app in:
 
 ## 📸 Screenshots / Demo
 
-![Home Page](https://res.cloudinary.com/djxmd6rso/image/upload/v1752772340/IMG_7100_2_fybgu9.png)
-![Home Page Search](https://res.cloudinary.com/djxmd6rso/image/upload/v1752772174/IMG_7103_2_m42o6d.png)
-![Home Page RTL](https://res.cloudinary.com/djxmd6rso/image/upload/v1752772228/IMG_7102_2_fb2npj.png)
-![Event Details](https://res.cloudinary.com/djxmd6rso/image/upload/v1752772106/IMG_7104_2_okmwmf.png)
-![Event Detail RTL](https://res.cloudinary.com/djxmd6rso/image/upload/v1752771872/IMG_7110_2_ra3ceg.png)
-![Event Detail Bottom Page](https://res.cloudinary.com/djxmd6rso/image/upload/v1752771968/IMG_7105_2_jtmbe4.png)
+<h3 align="center">🏠 Home Screens</h3>
+<div align="center">
+  <img src="https://res.cloudinary.com/djxmd6rso/image/upload/v1752772340/IMG_7100_2_fybgu9.png" alt="Home Page" width="200"/>
+  <img src="https://res.cloudinary.com/djxmd6rso/image/upload/v1752772174/IMG_7103_2_m42o6d.png" alt="Home Page Search" width="200"/>
+  <img src="https://res.cloudinary.com/djxmd6rso/image/upload/v1752772228/IMG_7102_2_fb2npj.png" alt="Home Page RTL" width="200"/>
+</div>
+
+<br/>
+
+<h3 align="center">🎟️ Event Detail Screens</h3>
+<div align="center">
+  <img src="https://res.cloudinary.com/djxmd6rso/image/upload/v1752772106/IMG_7104_2_okmwmf.png" alt="Event Details" width="200"/>
+  <img src="https://res.cloudinary.com/djxmd6rso/image/upload/v1752771872/IMG_7110_2_ra3ceg.png" alt="Event Detail RTL" width="200"/>
+  <img src="https://res.cloudinary.com/djxmd6rso/image/upload/v1752771968/IMG_7105_2_jtmbe4.png" alt="Event Detail Bottom Page" width="200"/>
+</div>
