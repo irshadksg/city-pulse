@@ -1,3 +1,4 @@
+import { useRTL } from '@/hooks/useRTL';
 import { useNavigation } from 'expo-router';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -20,8 +21,6 @@ interface AppHeaderProps {
   };
   directionToggleAction?: {
     show: boolean;
-    isRTL: boolean;
-    onPress: () => void;
   };
 }
 
@@ -35,6 +34,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   const theme = useTheme();
   const styles = createStyles(theme);
   const navigation = useNavigation();
+
+  const { isRTL, toggleRTL } = useRTL();
 
   return (
     <Appbar.Header dark style={styles.header}>
@@ -64,15 +65,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({
         />
       )}
 
-      {directionToggleAction?.show && (
+      {directionToggleAction?.show !== false && (
         <Appbar.Action
-          icon={
-            directionToggleAction.isRTL
-              ? 'format-textdirection-l-to-r'
-              : 'format-textdirection-r-to-l'
-          }
+          icon={isRTL ? 'format-textdirection-l-to-r' : 'format-textdirection-r-to-l'}
           color={theme.colors.onPrimary}
-          onPress={directionToggleAction.onPress}
+          onPress={toggleRTL}
         />
       )}
     </Appbar.Header>

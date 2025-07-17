@@ -47,11 +47,6 @@ const Home = () => {
           isSearchOpen,
           onPress: () => setIsSearchOpen(!isSearchOpen),
         }}
-        directionToggleAction={{
-          show: true,
-          isRTL,
-          onPress: toggleRTL,
-        }}
       />
 
       {/* SEARCH INPUTS */}
