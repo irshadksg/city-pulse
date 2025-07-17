@@ -1,4 +1,5 @@
 import { generateErrorMessage } from '@/helpers/http.helper';
+import { useRTL } from '@/hooks/useRTL';
 import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 import { MD3Theme, Text, useTheme } from 'react-native-paper';
@@ -17,6 +18,8 @@ const Home = () => {
   } = useHome();
   const theme = useTheme();
   const styles = createStyles(theme);
+
+  const { isRTL, toggleRTL } = useRTL();
 
   // ERROR HANDLING
   if (error) {
@@ -39,6 +42,11 @@ const Home = () => {
           show: true,
           isSearchOpen,
           onPress: () => setIsSearchOpen(!isSearchOpen),
+        }}
+        directionToggleAction={{
+          show: true,
+          isRTL,
+          onPress: toggleRTL,
         }}
       />
 

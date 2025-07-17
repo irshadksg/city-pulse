@@ -17,9 +17,20 @@ interface AppHeaderProps {
     isSearchOpen: boolean;
     onPress: () => void;
   };
+  directionToggleAction?: {
+    show: boolean;
+    isRTL: boolean;
+    onPress: () => void;
+  };
 }
 
-const AppHeader: React.FC<AppHeaderProps> = ({ title, editAction, logoutAction, searchAction }) => {
+const AppHeader: React.FC<AppHeaderProps> = ({
+  title,
+  editAction,
+  logoutAction,
+  searchAction,
+  directionToggleAction,
+}) => {
   const theme = useTheme();
   const styles = createStyles(theme);
 
@@ -44,6 +55,18 @@ const AppHeader: React.FC<AppHeaderProps> = ({ title, editAction, logoutAction, 
           icon={searchAction.isSearchOpen ? 'close' : 'magnify'}
           iconColor={theme.colors.onPrimary}
           onPress={searchAction.onPress}
+        />
+      )}
+
+      {directionToggleAction?.show && (
+        <Appbar.Action
+          icon={
+            directionToggleAction.isRTL
+              ? 'format-textdirection-l-to-r'
+              : 'format-textdirection-r-to-l'
+          }
+          iconColor={theme.colors.onPrimary}
+          onPress={directionToggleAction.onPress}
         />
       )}
     </Appbar.Header>
