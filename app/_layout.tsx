@@ -1,29 +1,59 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { queryClient } from '@/configs/query-client';
+import { AuthProvider } from '@/contexts/AuthProvider';
+import { RTLProvider } from '@/contexts/RTLProvider';
+import { useAppTheme } from '@/hooks/useAppTheme';
+import { useAuth } from '@/hooks/useAuth';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+  const theme = useAppTheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <PaperProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <RTLProvider>
+          <AuthProvider>
+            <AuthGate />
+            <StatusBar style="light" />
+          </AuthProvider>
+        </RTLProvider>
+      </QueryClientProvider>
+    </PaperProvider>
   );
 }
+
+const AuthGate = () => {
+  const { user, loading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loading) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+    const inTabsGroup = segments[0] === '(tabs)';
+
+    console.log({ user, loading, segments, inAuthGroup, inTabsGroup });
+
+    if (!user && !inAuthGroup) {
+      router.replace('/(auth)/login');
+    } else if (user && !inTabsGroup) {
+      router.replace('/(tabs)/home');
+    }
+  }, [user, loading, segments]);
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-background">
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  return <Stack screenOptions={{ headerShown: false }} />;
+};
