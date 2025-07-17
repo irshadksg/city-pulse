@@ -1,3 +1,4 @@
+import { useAuth } from '@/hooks/useAuth';
 import { useRTL } from '@/hooks/useRTL';
 import { useNavigation } from 'expo-router';
 import React from 'react';
@@ -12,7 +13,6 @@ interface AppHeaderProps {
   };
   logoutAction?: {
     show: boolean;
-    onPress?: () => void;
   };
   searchAction?: {
     show: boolean;
@@ -35,6 +35,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   const styles = createStyles(theme);
   const navigation = useNavigation();
 
+  const { logout } = useAuth();
   const { isRTL, toggleRTL } = useRTL();
 
   return (
@@ -50,11 +51,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
       )}
 
       {logoutAction?.show && (
-        <Appbar.Action
-          icon="logout"
-          color={theme.colors.onPrimary}
-          onPress={logoutAction.onPress}
-        />
+        <Appbar.Action icon="logout" color={theme.colors.onPrimary} onPress={logout} />
       )}
 
       {searchAction?.show && (

@@ -14,7 +14,7 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
-      <AppHeader title="Profile" />
+      <AppHeader title="Profile" logoutAction={{ show: true }} />
       <View style={styles.content}>
         <View style={styles.infoBlock}>
           <Text style={styles.label}>Name</Text>
