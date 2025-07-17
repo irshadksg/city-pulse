@@ -1,16 +1,8 @@
-import { useAuth } from '@/hooks/useAuth';
+import Profile from '@/components/profile/Profile';
 import React from 'react';
-import { View } from 'react-native';
-import { Button } from 'react-native-paper';
 
-function Profile() {
-  const { logout } = useAuth();
-
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button onPress={logout}>Logout</Button>
-    </View>
-  );
+function ProfileScreen() {
+  return <Profile />;
 }
 
-export default Profile;
+export default ProfileScreen;
