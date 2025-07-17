@@ -1,50 +1,116 @@
-# Welcome to your Expo app 👋
+# City Pulse – Local Events Explorer
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A demo event discovery mobile application built using **Expo (React Native)** with modern architecture, async storage-based user management, and RTL support. Developed as part of a technical assessment project.
 
-## Get started
+---
 
-1. Install dependencies
+## 🚀 Features
 
-   ```bash
-   npm install
-   ```
+- Search events by **keyword + city** using the Ticketmaster API
+- Event detail view with full information
+- Mark/unmark **favorite events**
+- Toggle between **LTR and RTL layout**
+- Local **user sign up & login** using AsyncStorage
+- File-based routing using `expo-router`
+- UI built with **React Native Paper**
+- Type-safe hooks and modular business logic
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 📁 Project Structure
 
 ```bash
-npm run reset-project
+app/
+├── (auth)/           # Login, Signup pages
+├── (tabs)/           # Home(Events), Event Details,Profile with bottom tabs
+├── _layout.tsx       # Root navigation layout
+components/           # Reusable UI components
+hooks/                # Custom business logic hooks
+utils/                # Storage and helpers
+configs/              # Paper-based theming, tanstack query client
+constants/            # Global color tokens
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 📦 Tech Stack
 
-To learn more about developing your project with Expo, look at the following resources:
+- **React Native + Expo**
+- **React Native Paper** – UI components & theming
+- **Expo Router** – file-based navigation
+- **AsyncStorage** – local user and favorites storage
+- **TypeScript** – static typing and interfaces
+- **i18n + RTL Support** – layout direction toggle (English ↔ Arabic layout)
+- **Ticketmaster API** – external event data source
+- **Axios** – to fetch data from ticketmaster
+- **Tanstack Reqact Query** – To handle fetch data
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## 🧠 Assumptions
 
-Join our community of developers creating universal apps.
+- Only **one user** is stored via AsyncStorage at a time — signing up a new user **overwrites** the previous one.
+- No backend server is used. All auth is **mocked locally**.
+- Biometric login is **not implemented**.
+- RTL support is implemented **at layout level**, but **no reusable RTL-aware components** (like `AppText`) were created. That could be an improvement area for production scale.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## 🛠 Getting Started
+
+### 1. Install dependencies
+
+```bash
+yarn install
+```
+
+### 2. .env
+
+```bash
+add .env file at the root
+EXPO_PUBLIC_TICKETMASTER_API_KEY= "ticketmaster-api-key"
+```
+
+### 3. Start the development server
+
+```bash
+yarn start
+```
+
+You'll be able to open the app in:
+
+- **Expo Go** (on your mobile device)
+- **iOS Simulator** / **Android Emulator**
+- **Development builds** (for biometric, maps, etc. if implemented later)
+
+## 📷 Screens Overview
+
+- **Login & Signup**
+- **Home tab**: Search + list events + event details
+- **Profile tab**: Display saved user
+
+---
+
+## 📈 Potential Improvements
+
+- Add **Firebase** for scalable auth and user management
+- Store **multiple users** or use Firestore
+- Build RTL-aware custom components like `AppText`, `AppView`
+- Add **unit testing** with Jest + RTL
+- Implement **biometric login** with `expo-local-authentication`
+
+---
+
+## 🧠 Learn More
+
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native Paper](https://callstack.github.io/react-native-paper/)
+- [Expo Router](https://expo.github.io/router/docs)
+- [AsyncStorage](https://react-native-async-storage.github.io/async-storage/)
+- [Ticketmaster Discovery API](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/)
+
+---
+
+## 📸 Screenshots / Demo
+
+_Add screenshots_
