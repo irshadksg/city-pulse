@@ -1,7 +1,14 @@
 import { useRTL } from '@/hooks/useRTL';
 import React from 'react';
 import { Image, Linking, ScrollView, StyleSheet, View } from 'react-native';
-import { Button, IconButton, MD3Theme, Text, useTheme } from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Button,
+  IconButton,
+  MD3Theme,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeader from '../ui/AppHeader';
 import { useEventDetails } from './useEventDetails';
@@ -36,6 +43,17 @@ const EventDetailsScreen = () => {
   const segment = classifications?.[0]?.segment?.name;
 
   const legalAge = ageRestrictions?.legalAgeEnforced ? '18+ only' : 'All ages';
+
+  if (queryEvent.isLoading) {
+    return (
+      <View style={{ flex: 1 }}>
+        <AppHeader title="Event Details" />
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, paddingBottom: bottom }}>
@@ -109,6 +127,7 @@ const createStyles = (theme: MD3Theme, isRTL: boolean) =>
     container: {
       paddingBottom: 40,
     },
+    loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     imageWrapper: {
       position: 'relative',
     },
