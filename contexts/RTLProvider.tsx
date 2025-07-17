@@ -1,5 +1,6 @@
 // providers/RTLProvider.tsx
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { STORAGE_KEYS } from '@/constants/constants';
+import { StorageService } from '@/services/storage-service';
 import React, { createContext, useEffect, useState } from 'react';
 import { I18nManager } from 'react-native';
 
@@ -18,7 +19,7 @@ export const RTLProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     const loadRTL = async () => {
-      const stored = await AsyncStorage.getItem('rtl');
+      const stored = await StorageService.getItem(STORAGE_KEYS.RTL_DIRECTION);
       const savedRTL = stored === 'true';
 
       if (savedRTL !== I18nManager.isRTL) {
@@ -34,7 +35,7 @@ export const RTLProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const toggleRTL = async () => {
     const newRTL = !isRTL;
-    await AsyncStorage.setItem('rtl', JSON.stringify(newRTL));
+    await StorageService.setItem(STORAGE_KEYS.RTL_DIRECTION, JSON.stringify(newRTL));
     I18nManager.allowRTL(true);
     I18nManager.forceRTL(newRTL);
     setIsRTL(newRTL);

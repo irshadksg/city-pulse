@@ -1,6 +1,5 @@
-// hooks/AuthProvider.tsx
-import { USER_STORAGE_KEY } from '@/constants/storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { STORAGE_KEYS } from '@/constants/constants';
+import { StorageService } from '@/services/storage-service';
 import React, { createContext, useEffect, useState } from 'react';
 
 export type AuthUser = {
@@ -23,9 +22,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const fetchUser = async () => {
-      const stored = await AsyncStorage.getItem(USER_STORAGE_KEY);
+      const stored: any = await StorageService.getItem(STORAGE_KEYS.SIGNED_IN_USER);
       if (stored) {
-        setUser(JSON.parse(stored));
+        setUser(stored);
       }
       setLoading(false);
     };
@@ -35,12 +34,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const stored = await AsyncStorage.getItem(USER_STORAGE_KEY);
+      const stored: any = await StorageService.getItem(STORAGE_KEYS.SIGNED_UP_USER);
       if (!stored) return false;
 
-      const parsed = JSON.parse(stored);
-      if (parsed.email === email?.toLowerCase() && parsed.password === password) {
-        setUser({ name: parsed.name, email });
+      // const stored? = JSON.parse(stored);
+      if (stored?.email === email?.toLowerCase() && stored?.password === password) {
+        const useData = { name: stored?.name, email };
+        StorageService.setItem(STORAGE_KEYS.SIGNED_IN_USER, useData);
+        setUser(useData);
         return true;
       }
       return false;
@@ -52,6 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async () => {
+    StorageService.removeItem(STORAGE_KEYS.SIGNED_IN_USER);
     setUser(null);
   };
 

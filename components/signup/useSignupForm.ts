@@ -1,4 +1,5 @@
-import { saveUser } from '@/utils/storage';
+import { STORAGE_KEYS } from '@/constants/constants';
+import { StorageService } from '@/services/storage-service';
 import { router } from 'expo-router';
 import { useState } from 'react';
 
@@ -55,19 +56,25 @@ export const useSignupForm = () => {
     if (!validate()) return;
 
     try {
-      await saveUser({
+      /* await saveUser({
+        name: formValues.name,
+        email: formValues.email,
+        password: formValues.password,
+      }); */
+
+      StorageService.setItem(STORAGE_KEYS.SIGNED_UP_USER, {
         name: formValues.name,
         email: formValues.email,
         password: formValues.password,
       });
-      router.replace('/(auth)');
+      router.replace('/(auth)/login');
     } catch (error) {
       console.error('Signup failed:', error);
     }
   };
 
   const handleNavigateToLogin = () => {
-    router.push('/(auth)');
+    router.replace('/(auth)/login');
   };
 
   return {
