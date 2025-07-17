@@ -1,7 +1,6 @@
 // hooks/AuthProvider.tsx
 import { USER_STORAGE_KEY } from '@/constants/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router } from 'expo-router';
 import React, { createContext, useEffect, useState } from 'react';
 
 export type AuthUser = {
@@ -42,7 +41,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const parsed = JSON.parse(stored);
       if (parsed.email === email?.toLowerCase() && parsed.password === password) {
         setUser({ name: parsed.name, email });
-        router.replace('/(tabs)');
         return true;
       }
       return false;
@@ -55,7 +53,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     setUser(null);
-    router.replace('/(auth)/login');
   };
 
   return (
