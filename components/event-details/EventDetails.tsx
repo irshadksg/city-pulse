@@ -18,7 +18,6 @@ const EventDetailsScreen = () => {
     id,
     name,
     images,
-    type,
     info,
     pleaseNote,
     url,
