@@ -1,7 +1,8 @@
 // components/SearchInput.tsx
 
 import { debounce } from '@/helpers/utils';
-import React, { useCallback, useMemo, useState } from 'react';
+import { useRTL } from '@/hooks/useRTL';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { TextInput, TextInputProps, useTheme } from 'react-native-paper';
 
@@ -18,8 +19,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   debounceDelay = 300,
   containerStyle = {},
 }) => {
-  const [query, setQuery] = useState(inputProps?.value || '');
+  // const [query, setQuery] = useState(inputProps?.value || '');
   const theme = useTheme();
+
+  const { isRTL } = useRTL();
 
   const debouncedSearch = useMemo(
     () =>
@@ -31,7 +34,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   const handleChange = useCallback(
     (text: string) => {
-      setQuery(text);
+      // setQuery(text);
       debouncedSearch(text);
     },
     [debouncedSearch],
@@ -40,13 +43,19 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <View style={[styles.container, containerStyle]}>
       <TextInput
-        value={query}
+        // value={query}
         onChangeText={handleChange}
         mode="outlined"
         placeholder={inputProps?.placeholder || 'Search...'}
-        left={<TextInput.Icon icon="magnify" />}
+        left={!isRTL && <TextInput.Icon icon="magnify" />}
+        right={isRTL && <TextInput.Icon icon="magnify" />}
         style={[styles.input, inputProps?.style]}
         theme={{ colors: { primary: theme.colors.primary } }}
+        contentStyle={{
+          writingDirection: isRTL ? 'rtl' : 'ltr',
+          textAlign: isRTL ? 'right' : 'left',
+          paddingRight: isRTL ? 20 : 0,
+        }}
         clearButtonMode="always"
       />
     </View>

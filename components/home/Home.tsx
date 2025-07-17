@@ -10,7 +10,7 @@ import { useHome } from './useHome';
 
 const Home = () => {
   const {
-    queryEvents: { data, isLoading, error },
+    queryEvents: { data, isFetching, error },
     isSearchOpen,
     setIsSearchOpen,
     apiParams,
@@ -53,25 +53,25 @@ const Home = () => {
       {isSearchOpen && (
         <View style={styles.searchContainer}>
           <SearchInput
-            inputProps={{ placeholder: 'Search by keyword...', value: apiParams.keyword }}
+            inputProps={{ placeholder: 'Search by keyword...' }}
             onSearch={(text) => setApiParams((prev) => ({ ...prev, keyword: text }))}
           />
           <SearchInput
-            inputProps={{ placeholder: 'Search by city...', value: apiParams.city }}
+            inputProps={{ placeholder: 'Search by city...' }}
             onSearch={(text) => setApiParams((prev) => ({ ...prev, city: text }))}
           />
         </View>
       )}
 
       {/* LOADER */}
-      {isLoading && (
+      {isFetching && (
         <View style={styles.loader}>
           <ActivityIndicator size="large" animating={true} />
         </View>
       )}
 
       {/* EVENT LIST */}
-      {!isLoading && (data?.length || 0) > 0 && (
+      {!isFetching && (data?.length || 0) > 0 && (
         <FlatList
           contentContainerStyle={styles.listContainer}
           data={data}
@@ -88,7 +88,7 @@ const Home = () => {
       )}
 
       {/* ERROR MESSAGE */}
-      {!isLoading && (!data || data.length === 0) && (
+      {!isFetching && (!data || data.length === 0) && (
         <View style={styles.notFound}>
           <Text style={styles.notFoundText}>No events found. </Text>
           <Text style={styles.tryChangeText}>Try changing your keyword</Text>
