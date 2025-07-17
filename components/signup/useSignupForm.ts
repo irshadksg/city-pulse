@@ -56,15 +56,9 @@ export const useSignupForm = () => {
     if (!validate()) return;
 
     try {
-      /* await saveUser({
-        name: formValues.name,
-        email: formValues.email,
-        password: formValues.password,
-      }); */
-
       StorageService.setItem(STORAGE_KEYS.SIGNED_UP_USER, {
         name: formValues.name,
-        email: formValues.email,
+        email: formValues.email?.toLowerCase(),
         password: formValues.password,
       });
       router.replace('/(auth)/login');
