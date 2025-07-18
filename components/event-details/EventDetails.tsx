@@ -1,6 +1,8 @@
+import { formatDate } from '@/helpers/utils';
 import { useRTL } from '@/hooks/useRTL';
-import React from 'react';
-import { Image, Linking, ScrollView, StyleSheet, View } from 'react-native';
+import { Image } from 'expo-image';
+import React, { useMemo } from 'react';
+import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 import {
   ActivityIndicator,
   Button,
@@ -13,10 +15,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeader from '../ui/AppHeader';
 import { useEventDetails } from './useEventDetails';
 
-const EventDetailsScreen = () => {
+const EventDetails = () => {
   const { isRTL } = useRTL();
   const theme = useTheme();
-  const styles = createStyles(theme, isRTL);
+  const styles = useMemo(() => createStyles(theme, isRTL), [theme, isRTL]);
 
   const { bottom } = useSafeAreaInsets();
   const { queryEvent, isFavorite, handleToggleFavorite } = useEventDetails();
@@ -35,9 +37,7 @@ const EventDetailsScreen = () => {
     ticketing,
   } = queryEvent.data || {};
 
-  const date = new Date(dates?.start?.dateTime ?? '').toLocaleString();
   const mainImage = images?.[0]?.url;
-
   const genre = classifications?.[0]?.genre?.name;
   const subGenre = classifications?.[0]?.subGenre?.name;
   const segment = classifications?.[0]?.segment?.name;
@@ -77,7 +77,7 @@ const EventDetailsScreen = () => {
         <View style={styles.content}>
           <Text style={styles.title}>{name || ''}</Text>
           <View style={styles.metaContainer}>
-            <Text style={styles.date}>📅 {date}</Text>
+            <Text style={styles.date}>📅 {formatDate(dates?.start?.dateTime)}</Text>
             <Text style={styles.meta}>
               🎭 {segment} - {genre} / {subGenre}
             </Text>
@@ -156,8 +156,6 @@ const createStyles = (theme: MD3Theme, isRTL: boolean) =>
     },
     metaContainer: {
       marginBottom: 12,
-      // flexDirection: 'row',
-      // flexWrap: 'wrap',
       gap: 14,
     },
     meta: {
@@ -187,4 +185,4 @@ const createStyles = (theme: MD3Theme, isRTL: boolean) =>
     },
   });
 
-export default EventDetailsScreen;
+export default EventDetails;
