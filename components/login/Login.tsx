@@ -1,15 +1,67 @@
-import React, { useMemo } from 'react';
+import { FormInput } from '@/components/ui/FormInput';
+import { useAuth } from '@/hooks/useAuth';
+import { router } from 'expo-router';
+import { useMemo, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 import { Button, MD3Theme, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FormInput } from '../ui/FormInput';
-import { useSignupForm } from './useSignupForm';
 
-export default function Signup() {
+type FormField = 'email' | 'password';
+
+export default function Login() {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const { formValues, formErrors, handleNavigateToLogin, handleChange, handleSubmit } =
-    useSignupForm();
+  const { login } = useAuth();
+
+  const [formValues, setFormValues] = useState({ email: '', password: '' });
+  const [formErrors, setFormErrors] = useState<
+    Partial<typeof formValues> & { credentials?: string }
+  >({});
+
+  const handleChange = (field: FormField, value: string) => {
+    setFormValues((prev) => ({ ...prev, [field]: value }));
+
+    if (formErrors[field] || formErrors.credentials) {
+      setFormErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[field];
+        delete updated.credentials;
+        return updated;
+      });
+    }
+  };
+
+  const validate = () => {
+    const errors: Partial<typeof formValues> = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formValues.email.trim()) {
+      errors.email = 'Email is required.';
+    } else if (!emailRegex.test(formValues.email)) {
+      errors.email = 'Email is invalid.';
+    }
+
+    if (!formValues.password.trim()) {
+      errors.password = 'Password is required.';
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleLogin = async () => {
+    if (!validate()) return;
+
+    const success = await login(formValues.email, formValues.password);
+
+    if (!success) {
+      setFormErrors((prev) => ({ ...prev, credentials: 'Invalid email or password.' }));
+    }
+  };
+
+  const goToSignup = () => {
+    router.replace('/(auth)/signup');
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -23,19 +75,8 @@ export default function Signup() {
           keyboardShouldPersistTaps="handled"
         >
           <Text variant="titleLarge" style={styles.heading}>
-            Sign Up
+            Login
           </Text>
-
-          <FormInput
-            errorMessage={formErrors.name}
-            inputProps={{
-              label: 'Name *',
-              value: formValues.name,
-              onChangeText: (text) => handleChange('name', text),
-              mode: 'outlined',
-              error: !!formErrors.name,
-            }}
-          />
 
           <FormInput
             errorMessage={formErrors.email}
@@ -62,24 +103,16 @@ export default function Signup() {
             }}
           />
 
-          <FormInput
-            errorMessage={formErrors.confirm}
-            inputProps={{
-              label: 'Confirm Password *',
-              value: formValues.confirm,
-              onChangeText: (text) => handleChange('confirm', text),
-              secureTextEntry: true,
-              mode: 'outlined',
-              error: !!formErrors.confirm,
-            }}
-          />
+          {formErrors.credentials && (
+            <Text style={{ color: 'red', marginBottom: 8 }}>{formErrors.credentials}</Text>
+          )}
 
-          <Button mode="contained" onPress={handleSubmit} style={styles.button}>
-            Create Account
+          <Button mode="contained" onPress={handleLogin} style={styles.button}>
+            Sign In
           </Button>
 
-          <Text style={styles.haveAccountText} onPress={handleNavigateToLogin}>
-            Already have an account? <Text style={styles.loginText}>Login</Text>
+          <Text style={styles.noAccountText} onPress={goToSignup}>
+            Don't have an account? <Text style={styles.signUpText}>Signup</Text>{' '}
           </Text>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -109,12 +142,12 @@ const createStyles = (theme: MD3Theme) =>
     button: {
       marginTop: 20,
     },
-    loginText: {
+    signUpText: {
       color: theme.colors.primary,
       fontSize: 14,
       fontWeight: '600',
     },
-    haveAccountText: {
+    noAccountText: {
       textAlign: 'center',
       marginTop: 12,
     },

@@ -7,8 +7,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
+
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const theme = useAppTheme();
@@ -28,32 +31,26 @@ export default function RootLayout() {
 }
 
 const AuthGate = () => {
-  const { user, loading } = useAuth();
+  const { user, initializing } = useAuth();
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    if (loading) return;
+    if (initializing) return;
 
     const inAuthGroup = segments[0] === '(auth)';
     const inTabsGroup = segments[0] === '(tabs)';
 
-    console.log({ user, loading, segments, inAuthGroup, inTabsGroup });
-
     if (!user && !inAuthGroup) {
       router.replace('/(auth)/login');
-    } else if (user && !inTabsGroup) {
+    }
+
+    if (user && !inTabsGroup) {
       router.replace('/(tabs)/home');
     }
-  }, [user, loading, segments]);
+  }, [user, initializing, segments]);
 
-  if (loading) {
-    return (
-      <View className="flex-1 justify-center items-center bg-background">
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  if (initializing) return null;
 
   return <Stack screenOptions={{ headerShown: false }} />;
 };
