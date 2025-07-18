@@ -12,10 +12,10 @@ const Home = () => {
     queryEvents: { data, isFetching, error },
     isSearchOpen,
     setIsSearchOpen,
-    apiParams,
-    setApiParams,
     isFavorite,
     handleToggleFavorite,
+    handleSearchByKeyword,
+    handleSearchByCity,
     handleNavigateDetailsPage,
   } = useHome();
 
@@ -51,11 +51,11 @@ const Home = () => {
         <View style={styles.searchContainer}>
           <SearchInput
             inputProps={{ placeholder: 'Search by keyword...' }}
-            onSearch={(text) => setApiParams((prev) => ({ ...prev, keyword: text }))}
+            onSearch={handleSearchByKeyword}
           />
           <SearchInput
             inputProps={{ placeholder: 'Search by city...' }}
-            onSearch={(text) => setApiParams((prev) => ({ ...prev, city: text }))}
+            onSearch={handleSearchByCity}
           />
         </View>
       )}
