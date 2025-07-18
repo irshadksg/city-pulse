@@ -3,7 +3,7 @@ import { fetchEvents } from '@/services/ticketmaster.service';
 import { GetEventApiParams } from '@/types/event.types';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export const useHome = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -21,6 +21,14 @@ export const useHome = () => {
     queryFn: () => fetchEvents(apiParams),
   });
 
+  const handleSearchByKeyword = useCallback((text: string) => {
+    setApiParams((prev) => ({ ...prev, keyword: text }));
+  }, []);
+
+  const handleSearchByCity = useCallback((text: string) => {
+    setApiParams((prev) => ({ ...prev, city: text }));
+  }, []);
+
   const handleNavigateDetailsPage = (eventId: string) => {
     router.push(`/(tabs)/home/${eventId}`);
   };
@@ -29,10 +37,10 @@ export const useHome = () => {
     isSearchOpen,
     setIsSearchOpen,
     queryEvents,
-    apiParams,
-    setApiParams,
     isFavorite,
     handleToggleFavorite,
+    handleSearchByKeyword,
+    handleSearchByCity,
     handleNavigateDetailsPage,
   };
 };

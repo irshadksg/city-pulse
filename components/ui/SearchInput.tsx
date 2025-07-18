@@ -1,8 +1,8 @@
 // components/SearchInput.tsx
 
-import { debounce } from '@/helpers/utils';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useRTL } from '@/hooks/useRTL';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { TextInput, TextInputProps, useTheme } from 'react-native-paper';
 
@@ -19,22 +19,14 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   debounceDelay = 300,
   containerStyle = {},
 }) => {
-  // const [query, setQuery] = useState(inputProps?.value || '');
   const theme = useTheme();
 
   const { isRTL } = useRTL();
 
-  const debouncedSearch = useMemo(
-    () =>
-      debounce((text: string) => {
-        onSearch(text);
-      }, debounceDelay),
-    [onSearch, debounceDelay],
-  );
+  const debouncedSearch = useDebounce(onSearch, debounceDelay);
 
   const handleChange = useCallback(
     (text: string) => {
-      // setQuery(text);
       debouncedSearch(text);
     },
     [debouncedSearch],
@@ -43,7 +35,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <View style={[styles.container, containerStyle]}>
       <TextInput
-        // value={query}
         onChangeText={handleChange}
         mode="outlined"
         placeholder={inputProps?.placeholder || 'Search...'}
