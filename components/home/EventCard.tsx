@@ -1,8 +1,9 @@
 import { formatDate } from '@/helpers/utils';
 import { useRTL } from '@/hooks/useRTL';
 import { TicketmasterEvent } from '@/types/event.types';
+import { Image } from 'expo-image';
 import React, { useMemo } from 'react';
-import { ImageBackground, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Card, IconButton, MD3Theme, Text, useTheme } from 'react-native-paper';
 
 interface Props {
@@ -24,22 +25,22 @@ const EventCard: React.FC<Props> = ({ event, isFavorite, onToggleFavorite, onPre
     <Card style={styles.card} elevation={3} onPress={onPress}>
       {imageUrl && (
         <View style={styles.imageWrapper}>
-          <ImageBackground
+          <Image
             source={{ uri: imageUrl }}
             style={styles.coverImage}
-            imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
-          >
-            <View style={styles.favoriteIconContainer}>
-              <IconButton
-                style={{ margin: 0 }}
-                icon={isFavorite ? 'heart' : 'heart-outline'}
-                iconColor={theme.colors.onPrimary}
-                containerColor={theme.colors.primary}
-                size={24}
-                onPress={() => onToggleFavorite(event.id)}
-              />
-            </View>
-          </ImageBackground>
+            contentFit="cover"
+            transition={300}
+          />
+          <View style={styles.favoriteIconContainer}>
+            <IconButton
+              style={{ margin: 0 }}
+              icon={isFavorite ? 'heart' : 'heart-outline'}
+              iconColor={theme.colors.onPrimary}
+              containerColor={theme.colors.primary}
+              size={24}
+              onPress={() => onToggleFavorite(event.id)}
+            />
+          </View>
         </View>
       )}
 
@@ -51,7 +52,7 @@ const EventCard: React.FC<Props> = ({ event, isFavorite, onToggleFavorite, onPre
           variant="bodySmall"
           numberOfLines={2}
           ellipsizeMode={isRTL ? 'head' : 'tail'}
-          style={[styles.info]}
+          style={styles.info}
         >
           {event.info || 'No additional info available.'}
         </Text>
@@ -73,8 +74,8 @@ const createStyles = (theme: MD3Theme, isRTL: boolean) =>
     coverImage: {
       width: '100%',
       height: 180,
-      justifyContent: 'flex-start',
-      alignItems: 'flex-end',
+      borderTopLeftRadius: 12,
+      borderTopRightRadius: 12,
     },
     favoriteIconContainer: {
       position: 'absolute',
@@ -82,7 +83,6 @@ const createStyles = (theme: MD3Theme, isRTL: boolean) =>
       right: 10,
       backgroundColor: theme.colors.primary,
       borderRadius: 30,
-      padding: 0,
     },
     content: {
       alignItems: isRTL ? 'flex-end' : 'flex-start',

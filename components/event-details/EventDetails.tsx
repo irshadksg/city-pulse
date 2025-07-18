@@ -62,7 +62,7 @@ const EventDetails = () => {
       <ScrollView contentContainerStyle={styles.container}>
         {mainImage && (
           <View style={styles.imageWrapper}>
-            <Image source={{ uri: mainImage }} style={styles.bannerImage} />
+            <Image source={{ uri: mainImage }} style={styles.bannerImage} transition={300} />
             <View style={styles.favoriteIcon}>
               <IconButton
                 icon={isFavorite?.(id || '') ? 'heart' : 'heart-outline'}
