@@ -7,8 +7,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
+
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const theme = useAppTheme();
@@ -47,13 +50,7 @@ const AuthGate = () => {
     }
   }, [user, initializing, segments]);
 
-  if (initializing) {
-    return (
-      <View className="flex-1 justify-center items-center bg-background">
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  if (initializing) return null;
 
   return <Stack screenOptions={{ headerShown: false }} />;
 };

@@ -3,6 +3,8 @@ import { StorageService } from '@/services/storage-service';
 import { User } from '@/types/user.typs';
 import React, { createContext, useEffect, useState } from 'react';
 
+import * as SplashScreen from 'expo-splash-screen';
+
 export type AuthUser = {
   name: string;
   email: string;
@@ -30,6 +32,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(stored);
       }
       setInitializing(false);
+
+      SplashScreen.hideAsync();
     };
     fetchUser();
   }, []);
