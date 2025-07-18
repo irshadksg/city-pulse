@@ -10,6 +10,7 @@ export type AuthUser = {
 
 interface AuthContextProps {
   loading: boolean;
+  initializing: boolean;
   user: AuthUser | null;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
@@ -19,6 +20,7 @@ export const AuthContext = createContext<AuthContextProps | undefined>(undefined
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [initializing, setInitializing] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (stored) {
         setUser(stored);
       }
-      setLoading(false);
+      setInitializing(false);
     };
     fetchUser();
   }, []);
@@ -42,8 +44,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const useData: User = { name: stored?.name, email };
         StorageService.setItem(STORAGE_KEYS.SIGNED_IN_USER, useData);
         setUser(useData);
+
         return true;
       }
+
       return false;
     } catch (error) {
       return false;
@@ -58,6 +62,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, login, logout, loading, initializing }}>
+      {children}
+    </AuthContext.Provider>
   );
 };

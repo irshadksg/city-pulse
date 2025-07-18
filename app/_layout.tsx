@@ -28,26 +28,26 @@ export default function RootLayout() {
 }
 
 const AuthGate = () => {
-  const { user, loading } = useAuth();
+  const { user, initializing } = useAuth();
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    if (loading) return;
+    if (initializing) return;
 
     const inAuthGroup = segments[0] === '(auth)';
     const inTabsGroup = segments[0] === '(tabs)';
 
-    console.log({ user, loading, segments, inAuthGroup, inTabsGroup });
-
     if (!user && !inAuthGroup) {
       router.replace('/(auth)/login');
-    } else if (user && !inTabsGroup) {
+    }
+
+    if (user && !inTabsGroup) {
       router.replace('/(tabs)/home');
     }
-  }, [user, loading, segments]);
+  }, [user, initializing, segments]);
 
-  if (loading) {
+  if (initializing) {
     return (
       <View className="flex-1 justify-center items-center bg-background">
         <ActivityIndicator size="large" />

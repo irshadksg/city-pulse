@@ -53,13 +53,14 @@ export default function LoginScreen() {
     if (!validate()) return;
 
     const success = await login(formValues.email, formValues.password);
+
     if (!success) {
       setFormErrors((prev) => ({ ...prev, credentials: 'Invalid email or password.' }));
     }
   };
 
   const goToSignup = () => {
-    router.replace('/(auth)/signup'); // Adjust to match your actual routing setup
+    router.replace('/(auth)/signup');
   };
 
   return (
