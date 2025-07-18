@@ -1,6 +1,6 @@
 import { useRTL } from '@/hooks/useRTL';
 import { TicketmasterEvent } from '@/types/event.types';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import { Card, IconButton, MD3Theme, Text, useTheme } from 'react-native-paper';
 
@@ -14,10 +14,12 @@ interface Props {
 const EventCard: React.FC<Props> = ({ event, isFavorite, onToggleFavorite, onPress }) => {
   const { isRTL } = useRTL();
   const theme = useTheme();
-  const styles = createStyles(theme, isRTL);
+  const styles = useMemo(() => createStyles(theme, isRTL), [theme, isRTL]);
 
-  const imageUrl = event.images?.[0]?.url;
-  const date = new Date(event.dates.start.dateTime).toLocaleString();
+  const imageUrl = event?.images?.[0]?.url;
+  const date = event?.dates?.start?.dateTime
+    ? new Date(event.dates.start.dateTime).toLocaleString()
+    : 'Date unavailable';
 
   return (
     <Card style={styles.card} elevation={3} onPress={onPress}>
