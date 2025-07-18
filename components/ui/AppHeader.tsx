@@ -1,7 +1,7 @@
 import { useAuth } from '@/hooks/useAuth';
 import { useRTL } from '@/hooks/useRTL';
 import { useNavigation } from 'expo-router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, MD3Theme, useTheme } from 'react-native-paper';
 
@@ -19,7 +19,7 @@ interface AppHeaderProps {
     isSearchOpen: boolean;
     onPress: () => void;
   };
-  directionToggleAction?: {
+  rtlToggleAction?: {
     show: boolean;
   };
 }
@@ -29,10 +29,10 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   editAction,
   logoutAction,
   searchAction,
-  directionToggleAction,
+  rtlToggleAction = { show: true },
 }) => {
   const theme = useTheme();
-  const styles = createStyles(theme);
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const navigation = useNavigation();
 
   const { logout } = useAuth();
@@ -62,7 +62,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
         />
       )}
 
-      {directionToggleAction?.show !== false && (
+      {rtlToggleAction && (
         <Appbar.Action
           icon={isRTL ? 'format-textdirection-l-to-r' : 'format-textdirection-r-to-l'}
           color={theme.colors.onPrimary}

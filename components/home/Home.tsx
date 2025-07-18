@@ -1,5 +1,5 @@
 import { generateErrorMessage } from '@/helpers/http.helper';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 import { MD3Theme, Text, useTheme } from 'react-native-paper';
 import AppHeader from '../ui/AppHeader';
@@ -20,7 +20,7 @@ const Home = () => {
   } = useHome();
 
   const theme = useTheme();
-  const styles = createStyles(theme);
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   // ERROR HANDLING
   if (error) {
@@ -73,6 +73,9 @@ const Home = () => {
           contentContainerStyle={styles.listContainer}
           data={data}
           keyExtractor={(item) => item.id}
+          initialNumToRender={5}
+          maxToRenderPerBatch={10}
+          windowSize={5}
           renderItem={({ item }) => (
             <EventCard
               event={item}
