@@ -2,7 +2,7 @@
 
 import { useDebounce } from '@/hooks/useDebounce';
 import { useRTL } from '@/hooks/useRTL';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { TextInput, TextInputProps, useTheme } from 'react-native-paper';
 
@@ -25,17 +25,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   const debouncedSearch = useDebounce(onSearch, debounceDelay);
 
-  const handleChange = useCallback(
-    (text: string) => {
-      debouncedSearch(text);
-    },
-    [debouncedSearch],
-  );
-
   return (
     <View style={[styles.container, containerStyle]}>
       <TextInput
-        onChangeText={handleChange}
+        onChangeText={debouncedSearch}
         mode="outlined"
         placeholder={inputProps?.placeholder || 'Search...'}
         left={!isRTL && <TextInput.Icon icon="magnify" />}

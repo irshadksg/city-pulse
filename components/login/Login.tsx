@@ -1,67 +1,15 @@
 import { FormInput } from '@/components/ui/FormInput';
-import { useAuth } from '@/hooks/useAuth';
-import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 import { Button, MD3Theme, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-type FormField = 'email' | 'password';
+import { useLogin } from './useLogin';
 
 export default function Login() {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const { login } = useAuth();
 
-  const [formValues, setFormValues] = useState({ email: '', password: '' });
-  const [formErrors, setFormErrors] = useState<
-    Partial<typeof formValues> & { credentials?: string }
-  >({});
-
-  const handleChange = (field: FormField, value: string) => {
-    setFormValues((prev) => ({ ...prev, [field]: value }));
-
-    if (formErrors[field] || formErrors.credentials) {
-      setFormErrors((prev) => {
-        const updated = { ...prev };
-        delete updated[field];
-        delete updated.credentials;
-        return updated;
-      });
-    }
-  };
-
-  const validate = () => {
-    const errors: Partial<typeof formValues> = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!formValues.email.trim()) {
-      errors.email = 'Email is required.';
-    } else if (!emailRegex.test(formValues.email)) {
-      errors.email = 'Email is invalid.';
-    }
-
-    if (!formValues.password.trim()) {
-      errors.password = 'Password is required.';
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleLogin = async () => {
-    if (!validate()) return;
-
-    const success = await login(formValues.email, formValues.password);
-
-    if (!success) {
-      setFormErrors((prev) => ({ ...prev, credentials: 'Invalid email or password.' }));
-    }
-  };
-
-  const goToSignup = () => {
-    router.replace('/(auth)/signup');
-  };
+  const { formValues, formErrors, handleChange, handleLogin, handleNavigateSignup } = useLogin();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -111,7 +59,7 @@ export default function Login() {
             Sign In
           </Button>
 
-          <Text style={styles.noAccountText} onPress={goToSignup}>
+          <Text style={styles.noAccountText} onPress={handleNavigateSignup}>
             Don't have an account? <Text style={styles.signUpText}>Signup</Text>{' '}
           </Text>
         </ScrollView>

@@ -41,6 +41,5 @@ export const RTLProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsRTL(newRTL);
   };
 
-  console.log('RTLProvider isRTL:', isRTL);
   return <RTLContext.Provider value={{ isRTL, toggleRTL }}>{children}</RTLContext.Provider>;
 };
