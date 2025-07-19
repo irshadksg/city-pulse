@@ -1,74 +1,77 @@
-import { FormInput } from '@/components/ui/FormInput';
+import {
+  AppInput,
+  AppKeyboardAvoidingView,
+  AppSafeAreaView,
+  AppScrollView,
+  AppText,
+} from '@/components/ui';
+import { AppTheme } from '@/configs/theme';
+import { useAppTheme } from '@/hooks/useAppTheme';
 import { useMemo } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
-import { Button, MD3Theme, Text, useTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Platform, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
 import { useLogin } from './useLogin';
 
 export default function Login() {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   const { formValues, formErrors, handleChange, handleLogin, handleNavigateSignup } = useLogin();
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
+    <AppSafeAreaView style={styles.safeArea}>
+      <AppKeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
       >
-        <ScrollView
+        <AppScrollView
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
         >
-          <Text variant="titleLarge" style={styles.heading}>
+          <AppText variant="titleLarge" style={styles.heading}>
             Login
-          </Text>
+          </AppText>
 
-          <FormInput
+          <AppInput
             errorMessage={formErrors.email}
-            inputProps={{
-              label: 'Email *',
-              value: formValues.email,
-              onChangeText: (text) => handleChange('email', text),
-              keyboardType: 'email-address',
-              autoCapitalize: 'none',
-              mode: 'outlined',
-              error: !!formErrors.email,
-            }}
+            label={'Email *'}
+            value={formValues.email}
+            onChangeText={(text) => handleChange('email', text)}
+            keyboardType={'email-address'}
+            autoCapitalize={'none'}
+            mode={'outlined'}
+            error={!!formErrors.email}
           />
 
-          <FormInput
+          <AppInput
             errorMessage={formErrors.password}
-            inputProps={{
-              label: 'Password *',
-              value: formValues.password,
-              onChangeText: (text) => handleChange('password', text),
-              secureTextEntry: true,
-              mode: 'outlined',
-              error: !!formErrors.password,
-            }}
+            label={'Password *'}
+            value={formValues.password}
+            onChangeText={(text) => handleChange('password', text)}
+            secureTextEntry={true}
+            mode={'outlined'}
+            error={!!formErrors.password}
           />
 
           {formErrors.credentials && (
-            <Text style={{ color: 'red', marginBottom: 8 }}>{formErrors.credentials}</Text>
+            <AppText style={{ color: 'red', marginBottom: 8 }}>{formErrors.credentials}</AppText>
           )}
 
           <Button mode="contained" onPress={handleLogin} style={styles.button}>
             Sign In
           </Button>
 
-          <Text style={styles.noAccountText} onPress={handleNavigateSignup}>
-            Don't have an account? <Text style={styles.signUpText}>Signup</Text>{' '}
-          </Text>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          <AppText style={styles.noAccountText} onPress={handleNavigateSignup}>
+            Don't have an account? <AppText style={styles.signUpText}>Signup</AppText>{' '}
+          </AppText>
+        </AppScrollView>
+      </AppKeyboardAvoidingView>
+    </AppSafeAreaView>
   );
 }
 
-const createStyles = (theme: MD3Theme) =>
+const createStyles = (theme: AppTheme) =>
   StyleSheet.create({
     safeArea: {
       flex: 1,

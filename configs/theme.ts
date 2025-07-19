@@ -15,7 +15,9 @@ export const lightTheme = {
   roundness: 6,
 };
 
-export const darkTheme = {
+export type AppTheme = typeof lightTheme;
+
+export const darkTheme: AppTheme = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
