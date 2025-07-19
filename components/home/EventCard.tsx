@@ -66,7 +66,6 @@ const createStyles = (theme: MD3Theme, isRTL: boolean) =>
     card: {
       marginVertical: 10,
       borderRadius: 12,
-      overflow: 'hidden',
     },
     imageWrapper: {
       position: 'relative',
