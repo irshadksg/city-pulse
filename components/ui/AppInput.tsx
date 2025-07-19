@@ -1,10 +1,11 @@
 // components/AppInput.tsx
 
+import { AppTheme } from '@/configs/theme';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { useRTL } from '@/hooks/useRTL';
 import React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
-import { MD3Theme, TextInput, TextInputProps } from 'react-native-paper';
+import { TextInput, TextInputProps } from 'react-native-paper';
 import { AppText } from './AppText';
 import { AppView } from './AppView';
 
@@ -48,7 +49,7 @@ export const AppInput: React.FC<AppInputProps> = ({
   );
 };
 
-const createStyles = (theme: MD3Theme, isRTL: boolean) =>
+const createStyles = (theme: AppTheme, isRTL: boolean) =>
   StyleSheet.create({
     wrapper: {
       marginBottom: 20,
