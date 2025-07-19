@@ -1,4 +1,3 @@
-// hooks/useRTL.ts
 import { RTLContext } from '@/contexts/RTLProvider';
 import { useContext } from 'react';
 

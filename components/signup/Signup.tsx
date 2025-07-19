@@ -1,93 +1,83 @@
+import { AppInput, AppSafeAreaView, AppScrollView, AppText } from '@/components/ui';
+import { AppTheme } from '@/configs/theme';
+import { useAppTheme } from '@/hooks/useAppTheme';
 import React, { useMemo } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
-import { Button, MD3Theme, Text, useTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { FormInput } from '../ui/FormInput';
+import { StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
+import { AppKeyboardAvoidingView } from '../ui/AppKeyboardAvoidingView';
 import { useSignupForm } from './useSignupForm';
 
 export default function Signup() {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { formValues, formErrors, handleNavigateToLogin, handleChange, handleSubmit } =
     useSignupForm();
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
-      >
-        <ScrollView
+    <AppSafeAreaView style={styles.safeArea}>
+      <AppKeyboardAvoidingView>
+        <AppScrollView
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
         >
-          <Text variant="titleLarge" style={styles.heading}>
+          <AppText variant="titleLarge" style={styles.heading}>
             Sign Up
-          </Text>
+          </AppText>
 
-          <FormInput
+          <AppInput
             errorMessage={formErrors.name}
-            inputProps={{
-              label: 'Name *',
-              value: formValues.name,
-              onChangeText: (text) => handleChange('name', text),
-              mode: 'outlined',
-              error: !!formErrors.name,
-            }}
+            label={'Name *'}
+            value={formValues.name}
+            onChangeText={(text) => handleChange('name', text)}
+            mode={'outlined'}
+            error={!!formErrors.name}
           />
 
-          <FormInput
+          <AppInput
             errorMessage={formErrors.email}
-            inputProps={{
-              label: 'Email *',
-              value: formValues.email,
-              onChangeText: (text) => handleChange('email', text),
-              keyboardType: 'email-address',
-              autoCapitalize: 'none',
-              mode: 'outlined',
-              error: !!formErrors.email,
-            }}
+            label={'Email *'}
+            value={formValues.email}
+            onChangeText={(text) => handleChange('email', text)}
+            keyboardType={'email-address'}
+            autoCapitalize={'none'}
+            mode={'outlined'}
+            error={!!formErrors.email}
           />
 
-          <FormInput
+          <AppInput
             errorMessage={formErrors.password}
-            inputProps={{
-              label: 'Password *',
-              value: formValues.password,
-              onChangeText: (text) => handleChange('password', text),
-              secureTextEntry: true,
-              mode: 'outlined',
-              error: !!formErrors.password,
-            }}
+            label={'Password *'}
+            value={formValues.password}
+            onChangeText={(text) => handleChange('password', text)}
+            secureTextEntry={true}
+            mode={'outlined'}
+            error={!!formErrors.password}
           />
 
-          <FormInput
+          <AppInput
             errorMessage={formErrors.confirm}
-            inputProps={{
-              label: 'Confirm Password *',
-              value: formValues.confirm,
-              onChangeText: (text) => handleChange('confirm', text),
-              secureTextEntry: true,
-              mode: 'outlined',
-              error: !!formErrors.confirm,
-            }}
+            label={'Confirm Password *'}
+            value={formValues.confirm}
+            onChangeText={(text) => handleChange('confirm', text)}
+            secureTextEntry={true}
+            mode={'outlined'}
+            error={!!formErrors.confirm}
           />
 
           <Button mode="contained" onPress={handleSubmit} style={styles.button}>
             Create Account
           </Button>
 
-          <Text style={styles.haveAccountText} onPress={handleNavigateToLogin}>
-            Already have an account? <Text style={styles.loginText}>Login</Text>
-          </Text>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          <AppText style={styles.haveAccountText} onPress={handleNavigateToLogin}>
+            Already have an account? <AppText style={styles.loginText}>Login</AppText>
+          </AppText>
+        </AppScrollView>
+      </AppKeyboardAvoidingView>
+    </AppSafeAreaView>
   );
 }
 
-const createStyles = (theme: MD3Theme) =>
+const createStyles = (theme: AppTheme) =>
   StyleSheet.create({
     safeArea: {
       flex: 1,

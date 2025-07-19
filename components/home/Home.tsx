@@ -1,9 +1,11 @@
+import { SearchInput } from '@/components/ui';
+import { AppTheme } from '@/configs/theme';
 import { generateErrorMessage } from '@/helpers/http.helper';
+import { useAppTheme } from '@/hooks/useAppTheme';
+import { TicketmasterEvent } from '@/types/event.types';
 import React, { useMemo } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
-import { MD3Theme, Text, useTheme } from 'react-native-paper';
-import AppHeader from '../ui/AppHeader';
-import { SearchInput } from '../ui/SearchInput';
+import { ActivityIndicator, StyleSheet } from 'react-native';
+import { AppFlatList, AppHeader, AppText, AppView } from '../ui';
 import EventCard from './EventCard';
 import { useHome } from './useHome';
 
@@ -19,24 +21,24 @@ const Home = () => {
     handleNavigateDetailsPage,
   } = useHome();
 
-  const theme = useTheme();
+  const theme = useAppTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   // ERROR HANDLING
   if (error) {
     return (
-      <View style={{ flex: 1 }}>
+      <AppView style={{ flex: 1 }}>
         <AppHeader title="Home" />
-        <View style={styles.loader}>
-          <Text style={styles.errorText}>Error: {generateErrorMessage(error)}</Text>
-        </View>
-      </View>
+        <AppView style={styles.loader}>
+          <AppText style={styles.errorText}>Error: {generateErrorMessage(error)}</AppText>
+        </AppView>
+      </AppView>
     );
   }
 
   // DATA RENDERING
   return (
-    <View style={{ flex: 1 }}>
+    <AppView style={{ flex: 1 }}>
       <AppHeader
         title="Home"
         searchAction={{
@@ -48,7 +50,7 @@ const Home = () => {
 
       {/* SEARCH INPUTS */}
       {isSearchOpen && (
-        <View style={styles.searchContainer}>
+        <AppView style={styles.searchContainer}>
           <SearchInput
             inputProps={{ placeholder: 'Search by keyword...' }}
             onSearch={handleSearchByKeyword}
@@ -57,19 +59,19 @@ const Home = () => {
             inputProps={{ placeholder: 'Search by city...' }}
             onSearch={handleSearchByCity}
           />
-        </View>
+        </AppView>
       )}
 
       {/* LOADER */}
       {isFetching && (
-        <View style={styles.loader}>
+        <AppView style={styles.loader}>
           <ActivityIndicator size="large" animating={true} />
-        </View>
+        </AppView>
       )}
 
       {/* EVENT LIST */}
       {!isFetching && (data?.length || 0) > 0 && (
-        <FlatList
+        <AppFlatList<TicketmasterEvent>
           contentContainerStyle={styles.listContainer}
           data={data}
           keyExtractor={(item) => item.id}
@@ -89,18 +91,18 @@ const Home = () => {
 
       {/* ERROR MESSAGE */}
       {!isFetching && (!data || data.length === 0) && (
-        <View style={styles.notFound}>
-          <Text style={styles.notFoundText}>No events found. </Text>
-          <Text style={styles.tryChangeText}>Try changing your keyword</Text>
-        </View>
+        <AppView style={styles.notFound}>
+          <AppText style={styles.notFoundText}>No events found. </AppText>
+          <AppText style={styles.tryChangeText}>Try changing your keyword</AppText>
+        </AppView>
       )}
-    </View>
+    </AppView>
   );
 };
 
 export default Home;
 
-const createStyles = (theme: MD3Theme) => {
+const createStyles = (theme: AppTheme) => {
   return StyleSheet.create({
     loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 

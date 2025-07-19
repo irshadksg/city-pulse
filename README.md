@@ -4,7 +4,7 @@ A demo event discovery mobile application built using **Expo (React Native)** wi
 
 ---
 
-## 📸 Screenshots / Demo
+## 📸 Screenshots / Demo (Tested on iOS)
 
 <h3 align="center">🏠 Home Screens</h3>
 <div align="center">
@@ -27,7 +27,7 @@ A demo event discovery mobile application built using **Expo (React Native)** wi
 - Search events by **keyword + city** using the Ticketmaster API
 - Event detail view with full information
 - Mark/unmark **favorite events**
-- Toggle between **LTR and RTL layout**
+- Toggle between **LTR and RTL layout & Text**
 - Local **user sign up & login** using AsyncStorage
 - File-based routing using `expo-router`
 - UI built with **React Native Paper**
@@ -42,7 +42,8 @@ app/
 ├── (auth)/           # Login, Signup pages
 ├── (tabs)/           # Home(Events), Event Details,Profile with bottom tabs
 ├── _layout.tsx       # Root navigation layout
-components/           # Reusable UI components
+components/           # Feature & UI components
+components/ui         # Reusable RTL aware components
 hooks/                # Custom business logic hooks
 utils/                # Storage and helpers
 configs/              # Paper-based theming, tanstack query client
@@ -58,10 +59,9 @@ constants/            # Global color tokens
 - **Expo Router** – file-based navigation
 - **AsyncStorage** – local user and favorites storage
 - **TypeScript** – static typing and interfaces
-- **i18n + RTL Support** – layout direction toggle (English ↔ Arabic layout)
 - **Ticketmaster API** – external event data source
-- **Axios** – to fetch data from ticketmaster
-- **Tanstack Reqact Query** – To handle fetch data
+- **Axios**
+- **Tanstack Reqact Query**
 
 ---
 
@@ -70,7 +70,6 @@ constants/            # Global color tokens
 - Only **one user** is stored via AsyncStorage at a time — signing up a new user **overwrites** the previous one.
 - No backend server is used. All auth is **mocked locally**.
 - Biometric login is **not implemented**.
-- RTL support is implemented **at layout level**, but **no reusable RTL-aware components** (like `AppText`) were created. That could be an improvement area for production scale.
 
 ---
 
@@ -113,7 +112,6 @@ You'll be able to open the app in:
 
 - Add **Firebase** for scalable auth and user management
 - Store **multiple users** or use Firestore
-- Build RTL-aware custom components like `AppText`, `AppView`
 - Add **unit testing** with Jest + RTL
 - Implement **biometric login** with `expo-local-authentication`
 

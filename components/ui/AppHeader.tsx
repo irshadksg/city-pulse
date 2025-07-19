@@ -1,9 +1,11 @@
+import { AppTheme } from '@/configs/theme';
+import { useAppTheme } from '@/hooks/useAppTheme';
 import { useAuth } from '@/hooks/useAuth';
 import { useRTL } from '@/hooks/useRTL';
 import { useNavigation } from 'expo-router';
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, MD3Theme, useTheme } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 
 interface AppHeaderProps {
   title: string;
@@ -24,19 +26,20 @@ interface AppHeaderProps {
   };
 }
 
-const AppHeader: React.FC<AppHeaderProps> = ({
+export const AppHeader: React.FC<AppHeaderProps> = ({
   title,
   editAction,
   logoutAction,
   searchAction,
   rtlToggleAction = { show: true },
 }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => createStyles(theme), [theme]);
+  const theme = useAppTheme();
   const navigation = useNavigation();
 
   const { logout } = useAuth();
   const { isRTL, toggleRTL } = useRTL();
+
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <Appbar.Header dark style={styles.header}>
@@ -73,7 +76,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   );
 };
 
-const createStyles = (theme: MD3Theme) =>
+const createStyles = (theme: AppTheme) =>
   StyleSheet.create({
     header: {
       backgroundColor: theme.colors.primary,
@@ -85,5 +88,3 @@ const createStyles = (theme: MD3Theme) =>
       color: theme.colors.onPrimary,
     },
   });
-
-export default AppHeader;

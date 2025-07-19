@@ -1,24 +1,17 @@
+import { AppHeader, AppScrollView, AppText, AppView } from '@/components/ui';
+import { AppTheme } from '@/configs/theme';
 import { formatDate } from '@/helpers/utils';
-import { useRTL } from '@/hooks/useRTL';
+import { useAppTheme } from '@/hooks/useAppTheme';
 import { Image } from 'expo-image';
 import React, { useMemo } from 'react';
-import { Linking, ScrollView, StyleSheet, View } from 'react-native';
-import {
-  ActivityIndicator,
-  Button,
-  IconButton,
-  MD3Theme,
-  Text,
-  useTheme,
-} from 'react-native-paper';
+import { Linking, StyleSheet } from 'react-native';
+import { ActivityIndicator, Button, IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppHeader from '../ui/AppHeader';
 import { useEventDetails } from './useEventDetails';
 
 const EventDetails = () => {
-  const { isRTL } = useRTL();
-  const theme = useTheme();
-  const styles = useMemo(() => createStyles(theme, isRTL), [theme, isRTL]);
+  const theme = useAppTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   const { bottom } = useSafeAreaInsets();
   const { queryEvent, isFavorite, handleToggleFavorite } = useEventDetails();
@@ -46,60 +39,60 @@ const EventDetails = () => {
 
   if (queryEvent.isLoading) {
     return (
-      <View style={{ flex: 1 }}>
+      <AppView style={{ flex: 1 }}>
         <AppHeader title="Event Details" />
-        <View style={styles.loader}>
+        <AppView style={styles.loader}>
           <ActivityIndicator size="large" color={theme.colors.primary} />
-        </View>
-      </View>
+        </AppView>
+      </AppView>
     );
   }
 
   return (
-    <View style={{ flex: 1, paddingBottom: bottom }}>
+    <AppView style={{ flex: 1, paddingBottom: bottom }}>
       <AppHeader title={name || 'Event Details'} />
 
-      <ScrollView contentContainerStyle={styles.container}>
+      <AppScrollView contentContainerStyle={styles.container}>
         {mainImage && (
-          <View style={styles.imageWrapper}>
+          <AppView style={styles.imageWrapper}>
             <Image source={{ uri: mainImage }} style={styles.bannerImage} transition={300} />
-            <View style={styles.favoriteIcon}>
+            <AppView style={styles.favoriteIcon}>
               <IconButton
                 icon={isFavorite?.(id || '') ? 'heart' : 'heart-outline'}
                 iconColor={theme.colors.onPrimary}
                 containerColor={theme.colors.primary}
                 onPress={() => handleToggleFavorite?.(id || '')}
               />
-            </View>
-          </View>
+            </AppView>
+          </AppView>
         )}
 
-        <View style={styles.content}>
-          <Text style={styles.title}>{name || ''}</Text>
-          <View style={styles.metaContainer}>
-            <Text style={styles.date}>📅 {formatDate(dates?.start?.dateTime)}</Text>
-            <Text style={styles.meta}>
+        <AppView style={styles.content}>
+          <AppText style={styles.title}>{name || ''}</AppText>
+          <AppView style={styles.metaContainer}>
+            <AppText style={styles.date}>📅 {formatDate(dates?.start?.dateTime)}</AppText>
+            <AppText style={styles.meta}>
               🎭 {segment} - {genre} / {subGenre}
-            </Text>
-            <Text style={styles.meta}>🔞 {legalAge}</Text>
-            <Text style={styles.meta}>
+            </AppText>
+            <AppText style={styles.meta}>🔞 {legalAge}</AppText>
+            <AppText style={styles.meta}>
               💲 All Inclusive Pricing: {ticketing?.allInclusivePricing?.enabled ? 'Yes' : 'No'}
-            </Text>
-          </View>
+            </AppText>
+          </AppView>
 
-          <Text style={styles.sectionTitle}>About</Text>
-          <Text style={styles.sectionText}>{info || 'No event info available.'}</Text>
+          <AppText style={styles.sectionTitle}>About</AppText>
+          <AppText style={styles.sectionText}>{info || 'No event info available.'}</AppText>
 
           {pleaseNote ? (
             <>
-              <Text style={styles.sectionTitle}>Please Note</Text>
-              <Text style={styles.sectionText}>{pleaseNote}</Text>
+              <AppText style={styles.sectionTitle}>Please Note</AppText>
+              <AppText style={styles.sectionText}>{pleaseNote}</AppText>
             </>
           ) : null}
 
           {seatmap?.staticUrl && (
             <>
-              <Text style={styles.sectionTitle}>Seatmap</Text>
+              <AppText style={styles.sectionTitle}>Seatmap</AppText>
               <Image
                 source={{ uri: seatmap?.staticUrl }}
                 style={styles.seatmap}
@@ -117,12 +110,12 @@ const EventDetails = () => {
               Buy Tickets
             </Button>
           )}
-        </View>
-      </ScrollView>
-    </View>
+        </AppView>
+      </AppScrollView>
+    </AppView>
   );
 };
-const createStyles = (theme: MD3Theme, isRTL: boolean) =>
+const createStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       paddingBottom: 40,
@@ -147,12 +140,10 @@ const createStyles = (theme: MD3Theme, isRTL: boolean) =>
       fontSize: 22,
       fontWeight: 'bold',
       marginBottom: 20,
-      textAlign: isRTL ? 'right' : 'left',
     },
     date: {
       fontSize: 16,
       marginBottom: 6,
-      textAlign: isRTL ? 'right' : 'left',
     },
     metaContainer: {
       marginBottom: 12,
@@ -160,18 +151,15 @@ const createStyles = (theme: MD3Theme, isRTL: boolean) =>
     },
     meta: {
       fontSize: 16,
-      textAlign: isRTL ? 'right' : 'left',
     },
     sectionTitle: {
       fontSize: 18,
       fontWeight: '600',
       marginTop: 16,
       marginBottom: 4,
-      textAlign: isRTL ? 'right' : 'left',
     },
     sectionText: {
       fontSize: 14,
-      textAlign: isRTL ? 'right' : 'left',
       color: theme.colors.onSurfaceVariant,
     },
     seatmap: {
