@@ -7,5 +7,6 @@ export * from '@/components/ui/AppScrollView';
 export * from '@/components/ui/AppText';
 export * from '@/components/ui/AppView';
 export * from '@/components/ui/ErrorBoundaryFallback';
-export * from '@/components/ui/ErrorMessage';
+export * from '@/components/ui/ErrorScreen';
+export * from '@/components/ui/LoaderScreen';
 export * from '@/components/ui/SearchInput';

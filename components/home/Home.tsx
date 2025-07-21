@@ -1,17 +1,17 @@
-import { SearchInput } from '@/components/ui';
+import { ErrorScreen, LoaderScreen, SearchInput } from '@/components/ui';
 import { AppTheme } from '@/configs/theme';
 import { generateErrorMessage } from '@/helpers/http.helper';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { TicketmasterEvent } from '@/types/event.types';
 import React, { useMemo } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { AppFlatList, AppHeader, AppText, AppView } from '../ui';
 import EventCard from './EventCard';
 import { useHome } from './useHome';
 
 const Home = () => {
   const {
-    queryEvents: { data, isFetching, error },
+    queryEvents: { data, isFetching, error, refetch },
     isSearchOpen,
     setIsSearchOpen,
     isFavorite,
@@ -27,13 +27,16 @@ const Home = () => {
   // ERROR HANDLING
   if (error) {
     return (
-      <AppView style={{ flex: 1 }}>
-        <AppHeader title="Home" />
-        <AppView style={styles.loader}>
-          <AppText style={styles.errorText}>Error: {generateErrorMessage(error)}</AppText>
-        </AppView>
-      </AppView>
+      <ErrorScreen
+        header={{ title: 'Home' }}
+        message={generateErrorMessage(error)}
+        onRetryPress={refetch}
+      />
     );
+  }
+
+  if (isFetching) {
+    return <LoaderScreen header={{ title: 'Home' }} />;
   }
 
   // DATA RENDERING
@@ -60,15 +63,8 @@ const Home = () => {
         </AppView>
       )}
 
-      {/* LOADER */}
-      {isFetching && (
-        <AppView style={styles.loader}>
-          <ActivityIndicator size="large" animating={true} />
-        </AppView>
-      )}
-
       {/* EVENT LIST */}
-      {!isFetching && (data?.length || 0) > 0 && (
+      {(data?.length || 0) > 0 && (
         <AppFlatList<TicketmasterEvent>
           contentContainerStyle={styles.listContainer}
           data={data}
@@ -87,7 +83,7 @@ const Home = () => {
         />
       )}
 
-      {/* ERROR MESSAGE */}
+      {/* NO DATA */}
       {!isFetching && (!data || data.length === 0) && (
         <AppView style={styles.notFound}>
           <AppText style={styles.notFoundText}>No events found. </AppText>

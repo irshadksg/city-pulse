@@ -4,15 +4,17 @@ import { ErrorBoundaryProps } from 'expo-router';
 import * as Updates from 'expo-updates';
 import React from 'react';
 import { ButtonProps } from 'react-native-paper';
-import { ErrorMessage } from './ErrorMessage';
+import { ErrorScreen } from './ErrorScreen';
 
 interface ErrorProps extends ErrorBoundaryProps {
+  header?: { title?: string; show?: boolean };
   enableReloadApp?: boolean;
   buttonTitle?: string;
   buttonProps?: ButtonProps;
 }
 
 export const ErrorBoundaryFallback: React.FC<ErrorProps> = ({
+  header,
   error,
   retry,
   enableReloadApp = false,
@@ -30,7 +32,8 @@ export const ErrorBoundaryFallback: React.FC<ErrorProps> = ({
   };
 
   return (
-    <ErrorMessage
+    <ErrorScreen
+      header={{ show: false }}
       message={errorMessage}
       retryText={buttonTitle || enableReloadApp ? 'Reload App' : 'Retry'}
       onRetryPress={handleReload}

@@ -4,10 +4,12 @@ import { useNavigation } from 'expo-router';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
+import { AppHeader } from './AppHeader';
 import { AppText } from './AppText';
 import { AppView } from './AppView';
 
 interface Props {
+  header: { title?: string; show?: boolean };
   message: string;
   title?: string;
   retryText?: string;
@@ -15,7 +17,8 @@ interface Props {
   enableGoBack?: boolean;
 }
 
-export const ErrorMessage: React.FC<Props> = ({
+export const ErrorScreen: React.FC<Props> = ({
+  header,
   title = 'Oops! Something went wrong.',
   message,
   retryText = 'Retry',
@@ -33,6 +36,10 @@ export const ErrorMessage: React.FC<Props> = ({
 
   return (
     <AppView style={{ flex: 1 }}>
+      {header.show !== false && (
+        <AppHeader title={header?.title} rtlToggleAction={{ show: false }} />
+      )}
+
       <AppView style={styles.container}>
         <AppText variant="headlineSmall" style={styles.title}>
           {title}

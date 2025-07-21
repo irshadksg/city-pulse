@@ -63,6 +63,7 @@ const createStyles = (theme: AppTheme) =>
     card: {
       marginVertical: 10,
       borderRadius: 12,
+      backgroundColor: theme.colors.background,
     },
     imageWrapper: {
       position: 'relative',
