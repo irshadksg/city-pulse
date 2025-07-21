@@ -4,7 +4,7 @@ import { ErrorBoundaryProps } from 'expo-router';
 import React from 'react';
 
 export function ErrorBoundary(props: ErrorBoundaryProps) {
-  return <ErrorBoundaryFallback {...props} />;
+  return <ErrorBoundaryFallback header={{ title: 'Home' }} {...props} />;
 }
 
 const HomeScreen = () => {
