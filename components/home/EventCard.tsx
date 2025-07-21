@@ -77,8 +77,8 @@ const createStyles = (theme: AppTheme) =>
       position: 'absolute',
       top: 10,
       right: 10,
-      backgroundColor: theme.colors.primary,
       borderRadius: 30,
+      backgroundColor: theme.colors.transparent,
     },
     title: {
       fontSize: 18,

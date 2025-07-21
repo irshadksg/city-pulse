@@ -4,6 +4,7 @@ import {
   AppSafeAreaView,
   AppScrollView,
   AppText,
+  AppView,
 } from '@/components/ui';
 import { AppTheme } from '@/configs/theme';
 import { useAppTheme } from '@/hooks/useAppTheme';
@@ -21,7 +22,7 @@ export default function Login() {
   return (
     <AppSafeAreaView style={styles.safeArea}>
       <AppKeyboardAvoidingView
-        style={styles.flex}
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
       >
@@ -33,26 +34,28 @@ export default function Login() {
             Login
           </AppText>
 
-          <AppInput
-            errorMessage={formErrors.email}
-            label={'Email *'}
-            value={formValues.email}
-            onChangeText={(text) => handleChange('email', text)}
-            keyboardType={'email-address'}
-            autoCapitalize={'none'}
-            mode={'outlined'}
-            error={!!formErrors.email}
-          />
+          <AppView style={styles.inputContainer}>
+            <AppInput
+              errorMessage={formErrors.email}
+              label={'Email *'}
+              value={formValues.email}
+              onChangeText={(text) => handleChange('email', text)}
+              keyboardType={'email-address'}
+              autoCapitalize={'none'}
+              mode={'outlined'}
+              error={!!formErrors.email}
+            />
 
-          <AppInput
-            errorMessage={formErrors.password}
-            label={'Password *'}
-            value={formValues.password}
-            onChangeText={(text) => handleChange('password', text)}
-            secureTextEntry={true}
-            mode={'outlined'}
-            error={!!formErrors.password}
-          />
+            <AppInput
+              errorMessage={formErrors.password}
+              label={'Password *'}
+              value={formValues.password}
+              onChangeText={(text) => handleChange('password', text)}
+              secureTextEntry={true}
+              mode={'outlined'}
+              error={!!formErrors.password}
+            />
+          </AppView>
 
           {formErrors.credentials && (
             <AppText style={{ color: 'red', marginBottom: 8 }}>{formErrors.credentials}</AppText>
@@ -77,9 +80,7 @@ const createStyles = (theme: AppTheme) =>
       flex: 1,
       backgroundColor: theme.colors.background,
     },
-    flex: {
-      flex: 1,
-    },
+    inputContainer: { gap: 16 },
     scrollContainer: {
       flexGrow: 1,
       padding: 20,

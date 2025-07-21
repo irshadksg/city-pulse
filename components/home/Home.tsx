@@ -52,13 +52,11 @@ const Home = () => {
       {isSearchOpen && (
         <AppView style={styles.searchContainer}>
           <SearchInput
-            inputProps={{ placeholder: 'Search by keyword...' }}
+            placeholder="Search by keyword..."
             onSearch={handleSearchByKeyword}
+            containerStyle={{ marginBottom: 16 }}
           />
-          <SearchInput
-            inputProps={{ placeholder: 'Search by city...' }}
-            onSearch={handleSearchByCity}
-          />
+          <SearchInput placeholder="Search by city..." onSearch={handleSearchByCity} />
         </AppView>
       )}
 
@@ -111,8 +109,7 @@ const createStyles = (theme: AppTheme) => {
       paddingBottom: 16,
     },
     searchContainer: {
-      padding: 12,
-      backgroundColor: theme.colors.shadow,
+      padding: 16,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.outline,
     },

@@ -132,6 +132,7 @@ const createStyles = (theme: AppTheme) =>
       position: 'absolute',
       top: 12,
       right: 12,
+      backgroundColor: theme.colors.transparent,
     },
     content: {
       padding: 16,

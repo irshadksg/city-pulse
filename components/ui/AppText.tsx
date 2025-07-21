@@ -24,7 +24,7 @@ export const AppText: React.FC<AppTextTheme> = ({
         {
           textAlign: isRTL ? 'right' : 'left',
           writingDirection: isRTL ? 'rtl' : 'ltr',
-          color: theme.colors.onSurface,
+          color: theme.colors.text,
         },
         style,
       ]}
