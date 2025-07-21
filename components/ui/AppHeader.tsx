@@ -65,7 +65,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         />
       )}
 
-      {rtlToggleAction && (
+      {rtlToggleAction.show && (
         <Appbar.Action
           icon={isRTL ? 'format-textdirection-l-to-r' : 'format-textdirection-r-to-l'}
           color={theme.colors.onPrimary}
