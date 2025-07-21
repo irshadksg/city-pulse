@@ -3,14 +3,12 @@
 import { ErrorBoundaryProps } from 'expo-router';
 import * as Updates from 'expo-updates';
 import React from 'react';
-import { ButtonProps } from 'react-native-paper';
 import { ErrorScreen } from './ErrorScreen';
 
 interface ErrorProps extends ErrorBoundaryProps {
   header: { title?: string; show?: boolean };
   enableReloadApp?: boolean;
   buttonTitle?: string;
-  buttonProps?: ButtonProps;
 }
 
 export const ErrorBoundaryFallback: React.FC<ErrorProps> = ({
@@ -19,7 +17,6 @@ export const ErrorBoundaryFallback: React.FC<ErrorProps> = ({
   retry,
   enableReloadApp = false,
   buttonTitle,
-  buttonProps,
 }) => {
   const errorMessage = error?.message ?? 'Please try reloading the app.';
 
