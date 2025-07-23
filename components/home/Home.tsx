@@ -35,10 +35,6 @@ const Home = () => {
     );
   }
 
-  if (isFetching) {
-    return <LoaderScreen header={{ title: 'Home' }} />;
-  }
-
   // DATA RENDERING
   return (
     <AppView style={{ flex: 1 }}>
@@ -63,8 +59,10 @@ const Home = () => {
         </AppView>
       )}
 
+      {isFetching && <LoaderScreen header={{ title: 'Home', show: false }} />}
+
       {/* EVENT LIST */}
-      {(data?.length || 0) > 0 && (
+      {!isFetching && (data?.length || 0) > 0 && (
         <AppFlatList<TicketmasterEvent>
           contentContainerStyle={styles.listContainer}
           data={data}
