@@ -1,17 +1,17 @@
-import { SearchInput } from '@/components/ui';
+import { ErrorScreen, LoaderScreen, SearchInput } from '@/components/ui';
 import { AppTheme } from '@/configs/theme';
 import { generateErrorMessage } from '@/helpers/http.helper';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { TicketmasterEvent } from '@/types/event.types';
 import React, { useMemo } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { AppFlatList, AppHeader, AppText, AppView } from '../ui';
 import EventCard from './EventCard';
 import { useHome } from './useHome';
 
 const Home = () => {
   const {
-    queryEvents: { data, isFetching, error },
+    queryEvents: { data, isFetching, error, refetch },
     isSearchOpen,
     setIsSearchOpen,
     isFavorite,
@@ -27,12 +27,11 @@ const Home = () => {
   // ERROR HANDLING
   if (error) {
     return (
-      <AppView style={{ flex: 1 }}>
-        <AppHeader title="Home" />
-        <AppView style={styles.loader}>
-          <AppText style={styles.errorText}>Error: {generateErrorMessage(error)}</AppText>
-        </AppView>
-      </AppView>
+      <ErrorScreen
+        header={{ title: 'Home' }}
+        message={generateErrorMessage(error)}
+        onRetryPress={refetch}
+      />
     );
   }
 
@@ -52,22 +51,15 @@ const Home = () => {
       {isSearchOpen && (
         <AppView style={styles.searchContainer}>
           <SearchInput
-            inputProps={{ placeholder: 'Search by keyword...' }}
+            placeholder="Search by keyword..."
             onSearch={handleSearchByKeyword}
+            containerStyle={{ marginBottom: 16 }}
           />
-          <SearchInput
-            inputProps={{ placeholder: 'Search by city...' }}
-            onSearch={handleSearchByCity}
-          />
+          <SearchInput placeholder="Search by city..." onSearch={handleSearchByCity} />
         </AppView>
       )}
 
-      {/* LOADER */}
-      {isFetching && (
-        <AppView style={styles.loader}>
-          <ActivityIndicator size="large" animating={true} />
-        </AppView>
-      )}
+      {isFetching && <LoaderScreen header={{ title: 'Home', show: false }} />}
 
       {/* EVENT LIST */}
       {!isFetching && (data?.length || 0) > 0 && (
@@ -89,7 +81,7 @@ const Home = () => {
         />
       )}
 
-      {/* ERROR MESSAGE */}
+      {/* NO DATA */}
       {!isFetching && (!data || data.length === 0) && (
         <AppView style={styles.notFound}>
           <AppText style={styles.notFoundText}>No events found. </AppText>
@@ -111,8 +103,7 @@ const createStyles = (theme: AppTheme) => {
       paddingBottom: 16,
     },
     searchContainer: {
-      padding: 12,
-      backgroundColor: theme.colors.shadow,
+      padding: 16,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.outline,
     },

@@ -29,7 +29,7 @@ export const AppInput: React.FC<AppInputProps> = ({
   const placeholderValue = placeholder || (typeof label === 'string' ? label?.toString() : '');
 
   return (
-    <AppView style={[styles.wrapper, containerStyle]}>
+    <AppView style={containerStyle}>
       <TextInput
         {...rest}
         style={[styles.input]}
@@ -38,11 +38,8 @@ export const AppInput: React.FC<AppInputProps> = ({
         left={!isRTL && <TextInput.Icon icon="magnify" />}
         right={isRTL && <TextInput.Icon icon="magnify" />}
         theme={{ colors: { primary: theme.colors.primary } }}
-        contentStyle={{
-          writingDirection: isRTL ? 'rtl' : 'ltr',
-          textAlign: isRTL ? 'right' : 'left',
-          paddingRight: isRTL ? 20 : 0,
-        }}
+        outlineStyle={styles.outline}
+        contentStyle={styles.content}
       />
       {errorMessage && <AppText style={styles.errorText}>{errorMessage}</AppText>}
     </AppView>
@@ -51,8 +48,11 @@ export const AppInput: React.FC<AppInputProps> = ({
 
 const createStyles = (theme: AppTheme, isRTL: boolean) =>
   StyleSheet.create({
-    wrapper: {
-      marginBottom: 20,
+    outline: { backgroundColor: theme.colors.background },
+    content: {
+      writingDirection: isRTL ? 'rtl' : 'ltr',
+      textAlign: isRTL ? 'right' : 'left',
+      paddingRight: isRTL ? 20 : 0,
     },
     input: {
       backgroundColor: '#fff',

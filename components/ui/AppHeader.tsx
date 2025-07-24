@@ -8,7 +8,7 @@ import { StyleSheet } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
 interface AppHeaderProps {
-  title: string;
+  title?: string;
   editAction?: {
     show: boolean;
     onPress?: () => void;
@@ -47,7 +47,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         <Appbar.BackAction onPress={navigation.goBack} color={theme.colors.onPrimary} />
       )}
 
-      <Appbar.Content title={title} titleStyle={styles.title} />
+      {title && <Appbar.Content title={title} titleStyle={styles.title} />}
 
       {editAction?.show && (
         <Appbar.Action icon="pencil" color={theme.colors.onPrimary} onPress={editAction.onPress} />
@@ -65,7 +65,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         />
       )}
 
-      {rtlToggleAction && (
+      {rtlToggleAction.show && (
         <Appbar.Action
           icon={isRTL ? 'format-textdirection-l-to-r' : 'format-textdirection-r-to-l'}
           color={theme.colors.onPrimary}

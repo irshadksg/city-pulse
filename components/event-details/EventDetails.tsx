@@ -1,11 +1,19 @@
-import { AppHeader, AppScrollView, AppText, AppView } from '@/components/ui';
+import {
+  AppHeader,
+  AppScrollView,
+  AppText,
+  AppView,
+  ErrorScreen,
+  LoaderScreen,
+} from '@/components/ui';
 import { AppTheme } from '@/configs/theme';
+import { generateErrorMessage } from '@/helpers/http.helper';
 import { formatDate } from '@/helpers/utils';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import { Image } from 'expo-image';
 import React, { useMemo } from 'react';
 import { Linking, StyleSheet } from 'react-native';
-import { ActivityIndicator, Button, IconButton } from 'react-native-paper';
+import { Button, IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEventDetails } from './useEventDetails';
 
@@ -14,7 +22,11 @@ const EventDetails = () => {
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   const { bottom } = useSafeAreaInsets();
-  const { queryEvent, isFavorite, handleToggleFavorite } = useEventDetails();
+  const {
+    queryEvent: { isLoading, error, refetch, data },
+    isFavorite,
+    handleToggleFavorite,
+  } = useEventDetails();
 
   const {
     id,
@@ -28,7 +40,7 @@ const EventDetails = () => {
     seatmap,
     ageRestrictions,
     ticketing,
-  } = queryEvent.data || {};
+  } = data || {};
 
   const mainImage = images?.[0]?.url;
   const genre = classifications?.[0]?.genre?.name;
@@ -37,15 +49,19 @@ const EventDetails = () => {
 
   const legalAge = ageRestrictions?.legalAgeEnforced ? '18+ only' : 'All ages';
 
-  if (queryEvent.isLoading) {
+  // ERROR HANDLING
+  if (error) {
     return (
-      <AppView style={{ flex: 1 }}>
-        <AppHeader title="Event Details" />
-        <AppView style={styles.loader}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
-        </AppView>
-      </AppView>
+      <ErrorScreen
+        header={{ title: 'Event Details' }}
+        message={generateErrorMessage(error)}
+        onRetryPress={refetch}
+      />
     );
+  }
+
+  if (isLoading) {
+    return <LoaderScreen header={{ title: 'Event Details' }} />;
   }
 
   return (
@@ -132,6 +148,7 @@ const createStyles = (theme: AppTheme) =>
       position: 'absolute',
       top: 12,
       right: 12,
+      backgroundColor: theme.colors.transparent,
     },
     content: {
       padding: 16,

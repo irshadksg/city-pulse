@@ -1,4 +1,4 @@
-import { AppInput, AppSafeAreaView, AppScrollView, AppText } from '@/components/ui';
+import { AppInput, AppSafeAreaView, AppScrollView, AppText, AppView } from '@/components/ui';
 import { AppTheme } from '@/configs/theme';
 import { useAppTheme } from '@/hooks/useAppTheme';
 import React, { useMemo } from 'react';
@@ -24,45 +24,47 @@ export default function Signup() {
             Sign Up
           </AppText>
 
-          <AppInput
-            errorMessage={formErrors.name}
-            label={'Name *'}
-            value={formValues.name}
-            onChangeText={(text) => handleChange('name', text)}
-            mode={'outlined'}
-            error={!!formErrors.name}
-          />
+          <AppView style={styles.inputContainer}>
+            <AppInput
+              errorMessage={formErrors.name}
+              label={'Name *'}
+              value={formValues.name}
+              onChangeText={(text) => handleChange('name', text)}
+              mode={'outlined'}
+              error={!!formErrors.name}
+            />
 
-          <AppInput
-            errorMessage={formErrors.email}
-            label={'Email *'}
-            value={formValues.email}
-            onChangeText={(text) => handleChange('email', text)}
-            keyboardType={'email-address'}
-            autoCapitalize={'none'}
-            mode={'outlined'}
-            error={!!formErrors.email}
-          />
+            <AppInput
+              errorMessage={formErrors.email}
+              label={'Email *'}
+              value={formValues.email}
+              onChangeText={(text) => handleChange('email', text)}
+              keyboardType={'email-address'}
+              autoCapitalize={'none'}
+              mode={'outlined'}
+              error={!!formErrors.email}
+            />
 
-          <AppInput
-            errorMessage={formErrors.password}
-            label={'Password *'}
-            value={formValues.password}
-            onChangeText={(text) => handleChange('password', text)}
-            secureTextEntry={true}
-            mode={'outlined'}
-            error={!!formErrors.password}
-          />
+            <AppInput
+              errorMessage={formErrors.password}
+              label={'Password *'}
+              value={formValues.password}
+              onChangeText={(text) => handleChange('password', text)}
+              secureTextEntry={true}
+              mode={'outlined'}
+              error={!!formErrors.password}
+            />
 
-          <AppInput
-            errorMessage={formErrors.confirm}
-            label={'Confirm Password *'}
-            value={formValues.confirm}
-            onChangeText={(text) => handleChange('confirm', text)}
-            secureTextEntry={true}
-            mode={'outlined'}
-            error={!!formErrors.confirm}
-          />
+            <AppInput
+              errorMessage={formErrors.confirm}
+              label={'Confirm Password *'}
+              value={formValues.confirm}
+              onChangeText={(text) => handleChange('confirm', text)}
+              secureTextEntry={true}
+              mode={'outlined'}
+              error={!!formErrors.confirm}
+            />
+          </AppView>
 
           <Button mode="contained" onPress={handleSubmit} style={styles.button}>
             Create Account
@@ -83,8 +85,8 @@ const createStyles = (theme: AppTheme) =>
       flex: 1,
       backgroundColor: theme.colors.background,
     },
-    flex: {
-      flex: 1,
+    inputContainer: {
+      gap: 16,
     },
     scrollContainer: {
       flexGrow: 1,

@@ -2,41 +2,32 @@
 
 import { useDebounce } from '@/hooks/useDebounce';
 import React from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { TextInputProps } from 'react-native-paper';
 import { AppInput } from './AppInput';
-import { AppView } from './AppView';
 
-type SearchInputProps = {
+interface SearchInputProps extends TextInputProps {
   onSearch: (text: string) => void;
-  inputProps?: TextInputProps;
   debounceDelay?: number;
   containerStyle?: ViewStyle;
-};
+}
 
 export const SearchInput: React.FC<SearchInputProps> = ({
   onSearch,
-  inputProps = {},
+  placeholder,
+  containerStyle,
   debounceDelay = 300,
-  containerStyle = {},
+  ...rest
 }) => {
   const debouncedSearch = useDebounce(onSearch, debounceDelay);
 
   return (
-    <AppView style={[styles.container, containerStyle]}>
-      <AppInput
-        onChangeText={debouncedSearch}
-        placeholder={inputProps?.placeholder || 'Search...'}
-        style={inputProps?.style}
-        clearButtonMode="while-editing"
-      />
-    </AppView>
+    <AppInput
+      containerStyle={containerStyle}
+      onChangeText={debouncedSearch}
+      placeholder={placeholder || 'Search...'}
+      clearButtonMode="while-editing"
+      {...rest}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-});
